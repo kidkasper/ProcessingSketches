@@ -16,7 +16,7 @@ void setup() {
   int xres = (size * count) + ((count - 1) * padding) + border * 2;
   int yres = (size * count) + ((count - 1) * padding) + border * 2;
 
-  size(480, 480);
+  size(500, 500);
 
   noFill();
   strokeWeight(cellsize / 2);
@@ -28,7 +28,8 @@ void setup() {
   for (int y = 0; y < count; y++)
     for (int x = 0; x < count; x++)
       for (int i = 0; i < 3; i++)
-        snakes[i] = new Snake(x * size + x * padding + border, y * size + y * padding + border);
+      //snakes[i] = new Snake(250, 250);
+      snakes[i] = new Snake(x * size + x * padding + border, y * size + y * padding + border);
 }
 
 void draw() {
@@ -94,7 +95,7 @@ class Snake {
 
   void draw() {
     stroke(c);
-    Boolean dead = true;
+    dead = true;
 
     for (int i = 0; i < segs.size() - 1; i++) {
       PVector s = segs.get(i);
@@ -116,9 +117,10 @@ class Snake {
           line(size - s.y + this.x, size - s.x + this.y, size - e.y + this.x, size - e.x + this.y);
 
           //dead check
-
           this.dead = false;
         }
+      } else {
+         println("Dead"); 
       }
     }
 
