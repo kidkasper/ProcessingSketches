@@ -9,26 +9,26 @@ Snake[] snakes;
 void setup() {
   background(40);
   colorMode(HSB,360,100,100,100);    
-  init();
-}
-
-void init() {  
   size = gridsize * cellsize;
 
   int padding = 30;
   int border = 50;
+  int xres = (size * count) + ((count - 1) * padding) + border * 2;
+  int yres = (size * count) + ((count - 1) * padding) + border * 2;
 
-  size((size * count) + ((count - 1) * padding) + border * 2, (size * count) + ((count - 1) * padding) + border * 2);
+  size(480, 480);
 
   noFill();
   strokeWeight(cellsize / 2);
   strokeCap(ROUND);
   frameRate(25);
+  
+  snakes = new Snake[3];
 
   for (int y = 0; y < count; y++)
     for (int x = 0; x < count; x++)
       for (int i = 0; i < 3; i++)
-        snakes.push(new Snake(x * size + x * padding + border, y * size + y * padding + border));
+        snakes[i] = new Snake(x * size + x * padding + border, y * size + y * padding + border);
 }
 
 void draw() {
@@ -46,26 +46,29 @@ void draw() {
 class Snake {
   int x, y;
   boolean dead;
+  PVector pos;
+  ArrayList<PVector> segs = new ArrayList<PVector>();
+  color c = color(random(360), random(10, 70), 100);  //Needs to be changed to HSB
+  
   Snake(int x, int y){
     this.dead = false;
     this.x = x;
     this.y = y;
+    pos = new PVector(ceil(random(size) / cellsize) * cellsize, ceil(random(size) / cellsize) * cellsize);
+    segs.add(pos);
   }
   
   int segCount = round(random(2, 10));
-  PVector[] segs;
+ 
+  
+  //PVector[] segs;
 
   PVector dir = PVector.fromAngle(floor(random(4)) * (TWO_PI / 4)).mult(cellsize);
-
-  //var size = gridsize*cellsize;
-
-  PVector pos = new PVector(Math.ceil(random(size) / cellsize) * cellsize, Math.ceil(random(size) / cellsize) * cellsize);
-  
+  int size = gridsize*cellsize;
   PVector newPos = new PVector(0, 0);
-
   int frames = 0;
-
-  segs.push(pos);
+  
+  //segs = (PVector[])append(segs,pos);
 
   void update() {
     if (random(1) < 0.3) {
@@ -80,21 +83,22 @@ class Snake {
     //move
     newPos = PVector.add(pos, dir);
 
-    segs.unshift(newPos);
+    //Add new element at start of array
+    segs.add(0,newPos);
     pos = newPos;
 
-    if (segs.length > segCount) segs.pop();
+    if (segs.size() > segCount) segs.remove(segs.size()-1);
   };
 
-  color c = color(random(360), random(10, 70), 100);  //Needs to be changed to HSB
+  
 
   void draw() {
     stroke(c);
     Boolean dead = true;
 
-    for (int i = 0; i < segs.length - 1; i++) {
-      PVector s = segs[i];
-      PVector e = segs[i + 1];
+    for (int i = 0; i < segs.size() - 1; i++) {
+      PVector s = segs.get(i);
+      PVector e = segs.get(i + 1);
 
       if (s.x >= 0 && s.x <= size && s.y >= 0 && s.y <= size) {
         if (e.x >= 0 && e.x <= size && e.y >= 0 && e.y <= size) {
