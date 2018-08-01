@@ -119,8 +119,6 @@ class Snake {
           //dead check
           this.dead = false;
         }
-      } else {
-         println("Dead"); 
       }
     }
 
