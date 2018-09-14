@@ -29,7 +29,7 @@ void Snake::UpdateSnake()
   }
   
   // shuffle position array 
-  for (int i = 0; i < currentLength; i++) {
+  for (int i = currentLength-1; i > 0; i--) {
     x[i+1] = x[i];
     y[i+1] = y[i];
   }

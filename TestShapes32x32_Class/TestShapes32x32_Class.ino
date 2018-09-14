@@ -67,8 +67,9 @@ void loop() {
   for (int i = 0; i < 3; i++)
   {
     snake[i].UpdateSnake();
-    
-    DrawSnake(snake[i].x[i], snake[i].y[i], snake[i].x[i+1], snake[i].y[i+1], hue+i*96, 255);  
+    for (int j = 0; j < snake[i].currentLength-1; i++) {
+      DrawSnake(snake[i].x[j], snake[i].y[j], snake[i].x[j+1], snake[i].y[j+1], hue+i*96, 255);
+    }
     Serial.print(snake[i].hue); 
     Serial.print("\n");
 
